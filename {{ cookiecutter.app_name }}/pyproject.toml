@@ -21,6 +21,14 @@ sources = [
 test_sources = [
     "tests",
 ]
+
+requires = [
+    "python-dotenv",
+    "toml",
+    "django",
+    
+]
+
 {{- cookiecutter.pyproject_table_briefcase_app_extra_content }}
 {% if cookiecutter.pyproject_table_macOS %}
 
