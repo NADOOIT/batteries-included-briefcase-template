@@ -3,3 +3,7 @@
 .vscode
 .idea
 __pycache__
+
+
+{{ cookiecutter.app_name|lower|replace('-', '_') }}/src/{{ cookiecutter.app_name|lower|replace('-', '_') }}/resources/kundendaten/vorlagen/*.docx
+{{ cookiecutter.app_name|lower|replace('-', '_') }}/src/{{ cookiecutter.app_name|lower|replace('-', '_') }}/resources/kundendaten/*.json
