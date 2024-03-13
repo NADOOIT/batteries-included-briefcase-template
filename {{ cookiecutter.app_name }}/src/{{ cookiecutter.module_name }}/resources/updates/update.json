@@ -1,0 +1,25 @@
+{
+  "neues_update_wurde_installiert": true,
+  "Updates": {
+    "3a259cd3-31c7-45be-952a-17b8948f5505": {
+      "name": "UpdateName",
+      "version": "0.0.1",
+      "date": "01.03.2024",
+      "fullpatch_pdf": "098-765-4321",
+      "changes": {
+        "bugfixes": [
+          "Korrekturen im XYZ",
+          "Korrekturen im ABC"
+        ],
+        "features": [
+          "Cooles neue features"
+        ],
+        "general_updates": [
+          "Verbesserungen der Benutzerdokumentation"
+        ]
+      }
+    }
+  }
+}
+
+
