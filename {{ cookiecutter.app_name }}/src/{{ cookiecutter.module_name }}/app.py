@@ -14,7 +14,7 @@ from toga import Command, Group
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.LicenseWindow import LicenseWindow
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.UpdateWindow import UpdateWindow
 
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_base_dir, open_file, get_help_file_path,update_in_updates_ordner_uebertragen
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_base_dir, open_file, get_help_file_path,update_in_updates_ordner_uebertragen, get_updates_datei_user
 from screeninfo import get_monitors
 
 class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
@@ -173,7 +173,7 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
         self.scroll_container = toga.ScrollContainer(
             content=self.main_box, style=Pack(direction=COLUMN, flex=1), vertical=True
         ) 
-                self.main_window = toga.MainWindow(
+        self.main_window = toga.MainWindow(
             title=self.formal_name, size=(half_screen_width, screen_height * 80 / 100)
         )
         self.main_window.content = (
