@@ -203,4 +203,3 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
 def main():
     return {{ cookiecutter.app_name|lower|replace('-', '_') }}()
 
-{% endif %}
