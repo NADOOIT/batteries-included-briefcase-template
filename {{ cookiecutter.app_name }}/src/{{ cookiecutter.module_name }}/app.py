@@ -1,10 +1,6 @@
 """
 {{ cookiecutter.description|escape_toml }}
 """
-{% if cookiecutter.app_source %}
-{{ cookiecutter.app_source }}
-{% else %}
-
 import os
 import sys
 import subprocess
@@ -203,4 +199,3 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
 def main():
     return {{ cookiecutter.app_name|lower|replace('-', '_') }}()
 
-{% endif %}
