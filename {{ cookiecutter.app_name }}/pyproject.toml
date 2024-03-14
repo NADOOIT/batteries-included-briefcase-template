@@ -23,8 +23,7 @@ test_sources = [
 requires = [
     "python-dotenv",
     "toml",
-    "django",
-
+    "screeninfo",
 ]
 
 {{ cookiecutter.pyproject_table_briefcase_app_extra_content }}
