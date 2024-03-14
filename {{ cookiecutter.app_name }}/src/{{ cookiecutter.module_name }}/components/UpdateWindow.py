@@ -30,7 +30,7 @@ class UpdateWindow(toga.Window):
         box.add(vorheriges_update_button)
         nächstes_update_button = toga.Button('Nächstes Update', style=StandardStyling.standard_button_style(), on_press=self.nächstes_update)
         box.add(nächstes_update_button)
-        fenster_schliessen_button = toga.Button('Fenster schließen', style=StandardStyling.standard_button_style(), on_press=self.close)
+        fenster_schliessen_button = toga.Button('Fenster schließen', style=StandardStyling.standard_button_style(), on_press=self.fenster_schließen)
         box.add(fenster_schliessen_button)
 
         return box
