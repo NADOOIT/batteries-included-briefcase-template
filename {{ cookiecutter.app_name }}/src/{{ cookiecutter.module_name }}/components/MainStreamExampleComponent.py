@@ -20,7 +20,12 @@ class MainStreamExampleComponent(toga.Box):
         self.app = app
 
         self.standardeingabe_box = toga.Box(style=Pack(direction=COLUMN, flex=1))
-
+        self.standardeingabe_box.lable1 = toga.Label(
+            "Reference",
+            style=StandardStyling.standard_label_style(),
+        )
+        self.standardeingabe_box.add(self.standardeingabe_box.lable1)
+        
         if start_values is not None:
             self.setup_input_fields(start_values)
 
@@ -33,11 +38,7 @@ class MainStreamExampleComponent(toga.Box):
         self.add(self.next_button)
 
     def setup_input_fields(self, start_values):
-        self.reference_input = toga.TextInput(style=StandardStyling.standard_input_style())
-        self.standardeingabe_box.add(
-            toga.Label("Unser Zeichen:", style=StandardStyling.standard_label_style())
-        )
-        self.standardeingabe_box.add(self.reference_input)
+        self.standardeingabe_box.lable1.text = start_values["lable1"]
 
     def next_step(self, widget):
         # Implement the logic for the next step
