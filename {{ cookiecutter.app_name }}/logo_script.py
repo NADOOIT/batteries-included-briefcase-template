@@ -57,7 +57,7 @@ def create_icon_files(src_path, dist_path):
 
 # Paths
 source_path = "."
-dist_path = "{{ cookiecutter.app_name }}/src/{{ cookiecutter.module_name }}/resources/"
+dist_path = "src/{{ cookiecutter.module_name }}/resources/"
 
 # Create the icon files
 create_icon_files(source_path, dist_path)
