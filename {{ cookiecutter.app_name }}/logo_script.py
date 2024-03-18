@@ -1,12 +1,28 @@
 from PIL import Image
 import os
+from rembg import remove
 
+# HOW TO USE
+# 1. Put Logo into the src/{{ cookiecutter.module_name }} folder
+# 2. Install dependencies: pip install -r requirements.txt
+# 3. Run script with: python logo_script.py
+def remove_background(image_path):
+    # Load the image
+    img = Image.open(image_path)
 
+    # Remove the background
+    output = remove(img)
+
+    # Save the image with the background removed
+    output.save(image_path)
+    
 def create_icon_files(src_path, dist_path):
     # Ensure the source logo.png exists
     logo_path = os.path.join(src_path, "{{ cookiecutter.module_name }}.png")
     if not os.path.exists(logo_path):
         raise FileNotFoundError(f"The source file {logo_path} does not exist.")
+
+    remove_background(logo_path)
 
     # Open the source image
     img = Image.open(logo_path)
