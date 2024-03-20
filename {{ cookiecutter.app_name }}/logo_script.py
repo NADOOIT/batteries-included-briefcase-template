@@ -18,7 +18,7 @@ def remove_background(image_path):
     
 def create_icon_files(src_path, dist_path):
     # Ensure the source logo.png exists
-    logo_path = os.path.join(src_path, "{{ cookiecutter.module_name }}.png")
+    logo_path = os.path.join(src_path, "logo.png")
     if not os.path.exists(logo_path):
         raise FileNotFoundError(f"The source file {logo_path} does not exist.")
 
@@ -46,7 +46,7 @@ def create_icon_files(src_path, dist_path):
 
     # Use `iconutil` to create the .icns file from the .iconset directory
     os.system(
-        f'iconutil -c icns {iconset_path} -o {os.path.join(dist_path, "nadoo_law.icns")}'
+        f'iconutil -c icns {iconset_path} -o {os.path.join(dist_path, "{{ cookiecutter.module_name }}.icns")}'
     )
 
     # Clean up the .iconset directory after creating the .icns file
