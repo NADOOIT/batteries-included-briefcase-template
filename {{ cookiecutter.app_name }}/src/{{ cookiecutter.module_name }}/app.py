@@ -54,7 +54,7 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
     def aktualisierung_anzeigen(self):
         self.show_updates()
         
-        def überprüfung_auf_erstausführung_nach_aktualisierung_oder_installation(self):
+    def überprüfung_auf_erstausführung_nach_aktualisierung_oder_installation(self):
         #beim start ausführen
         update_daten = update_daten_laden_user()
         neues_update_wurde_installiert = update_daten.get("neues_update_wurde_installiert")
