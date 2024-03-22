@@ -191,12 +191,6 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
             update_in_updates_ordner_uebertragen(self.app)
             self.aktualisierung_anzeigen()
             
-    def main(self):
-        pass
-
-    def exit(self):
-        pass
-
 
 def main():
     return {{ cookiecutter.app_name|lower|replace('-', '_') }}()
