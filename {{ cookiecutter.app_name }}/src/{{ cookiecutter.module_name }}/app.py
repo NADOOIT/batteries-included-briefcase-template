@@ -14,7 +14,8 @@ from toga import Command, Group
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.LicenseWindow import LicenseWindow
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.UpdateWindow import UpdateWindow
 
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_base_dir, open_file, get_help_file_path,update_in_updates_ordner_uebertragen, get_updates_datei_user,update_daten_laden_user
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_base_dir, open_file, get_help_file_path,update_in_updates_ordner_uebertragen, get_updates_datei_user,update_daten_laden_app,setup_folders,update_daten_laden_user
+
 from screeninfo import get_monitors
 
 class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
@@ -53,8 +54,9 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
                   
     def aktualisierung_anzeigen(self):
         self.show_updates()
-        
-        def überprüfung_auf_erstausführung_nach_aktualisierung_oder_installation(self):
+    
+    #fixed indenting    
+    def überprüfung_auf_erstausführung_nach_aktualisierung_oder_installation(self):
         #beim start ausführen
         update_daten = update_daten_laden_user()
         neues_update_wurde_installiert = update_daten.get("neues_update_wurde_installiert")
