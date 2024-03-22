@@ -53,7 +53,8 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
                   
     def aktualisierung_anzeigen(self):
         self.show_updates()
-        
+    
+    #fixed indenting    
     def überprüfung_auf_erstausführung_nach_aktualisierung_oder_installation(self):
         #beim start ausführen
         update_daten = update_daten_laden_user()
