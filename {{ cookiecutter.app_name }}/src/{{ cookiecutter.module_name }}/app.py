@@ -20,7 +20,7 @@ from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.UpdateWindow
 
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_base_dir, open_file, get_help_file_path,update_in_updates_ordner_uebertragen, get_updates_datei_user,update_daten_laden_app,setup_folders,update_daten_laden_user
 
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.Dateiauswahl import Startfenster
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.Startfenster import Startfenster
 
 from screeninfo import get_monitors
 
