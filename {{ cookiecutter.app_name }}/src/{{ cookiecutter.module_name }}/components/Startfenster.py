@@ -101,8 +101,29 @@ class Startfenster(toga.Box):
             
             print("STUFF")
 
-            
+        # Erzeuge einen Fake Fehler um das Fehlerfenster zu testen
+        # raise ValueError("Dies ist eine Fake-Fehlermeldung.")  
+        
+        
         except Exception as e:
-            print(f"Fehler: {str(e)}")
-            fehlermeldung_componente = Fehlermeldung(self,fehlermeldung=e)
-            self.add(fehlermeldung_componente)
+            print(f"Fehler beim Verarbeiten der Datei: {str(e)}")
+            fehlermeldung = Fehlermeldung(
+                            self.app,
+                            retry_function=lambda: self.next_step(),
+                            fehlermeldung=e,
+                        )
+            self.fehlermeldung_widget = fehlermeldung
+            self.standardeingabe_box.add(self.fehlermeldung_widget)
+        finally:
+            # Lösche die Datei mit den Daten, die in die temporäre Datei geschrieben wurden
+            dateipfade_der_zu_loeschenden_datei = self.pfad_zur_temp_datei_in_ordner_mit_zugriffrechten
+            
+            try:
+                os.remove(dateipfade_der_zu_loeschenden_datei)
+                print(f"Die temporäre Datei '{dateipfade_der_zu_loeschenden_datei}' wurde erfolgreich gelöscht.")
+            except FileNotFoundError:
+                print(f"Die temporäre Datei '{dateipfade_der_zu_loeschenden_datei}' konnte nicht gefunden werden.")
+            except PermissionError:
+                print(f"Keine ausreichenden Berechtigungen zum Löschen der temporären Datei '{dateipfade_der_zu_loeschenden_datei}'.")
+            except Exception as e:
+                print(f"Ein unerwarteter Fehler ist beim Löschen der temporären Datei aufgetreten: {str(e)}")
