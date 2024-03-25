@@ -26,6 +26,7 @@ requires = [
     "python-dotenv",
     "toml",
     "screeninfo",
+    "toga",
 ]
 
 {{- cookiecutter.pyproject_table_briefcase_app_extra_content }}

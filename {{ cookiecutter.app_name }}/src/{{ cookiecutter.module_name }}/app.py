@@ -16,6 +16,8 @@ from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.UpdateWindow
 
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_base_dir, open_file, get_help_file_path,update_in_updates_ordner_uebertragen, get_updates_datei_user,update_daten_laden_app,setup_folders,update_daten_laden_user
 
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.Dateiauswahl import Startfenster
+
 from screeninfo import get_monitors
 
 class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
@@ -184,6 +186,19 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
 
         # Set the window position to the right side of the screen
         self.main_window.position = (half_screen_width, 0)
+
+        # Datei Auswahl
+        startfenster = Startfenster(app = self.app)
+
+        # Create the main window
+        self.main_box.add(
+            toga.Label(
+                "Willkommen bei {{ cookiecutter.project_name|escape_toml }}",
+                style=Pack(font_size=20, padding_top=10, padding_bottom=10),
+            ),
+            startfenster
+        )
+
 
         self.main_window.show()
         
