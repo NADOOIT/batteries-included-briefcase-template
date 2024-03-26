@@ -41,7 +41,7 @@ class UpdateWindow(toga.Window):
     def update_keys_berechnen(self):
         updates = update_daten_laden_user()['Updates']
         self.update_keys = list(updates.keys())  # Extrahiere alle Schlüssel
-        self.current_update_index = len(self.update_keys) - 2
+        self.current_update_index = len(self.update_keys) - 1
 
     def daten_in_felder_übertragen(self):
         if self.update_keys:
