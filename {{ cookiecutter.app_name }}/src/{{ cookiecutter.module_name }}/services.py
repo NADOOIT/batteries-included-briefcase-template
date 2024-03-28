@@ -6,10 +6,10 @@ import shutil
 
 from datetime import datetime
 
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.CONSTANTS import KUNDENDATEN_ORDNER_APP, ARCHIV_ORDNER, BASE_DIR, UPDATE_ORDNER_NAME_USER, UPDATE_ORDNER_NAME_APP
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.CONSTANTS import KUNDENDATEN_ORDNER_APP, ARCHIV_ORDNER, BASE_DIR, UPDATE_ORDNER_NAME_USER, UPDATE_ORDNER_NAME_APP, SETTINGS_ORDNER
 
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.utils import (
-    get_base_dir_path,
+    get_base_dir_path, get_settings_file_path
 )
 
 """ 
@@ -30,12 +30,10 @@ def get_xyz_data():
 def setup_folders():
     # Grund Verzeichnisstruktur anlegen
     ensure_base_folder_exits()
-    versionsordner_erstellen()
+    ensure_folder_exists(UPDATE_ORDNER_NAME_USER)
+    ensure_folder_exists(SETTINGS_ORDNER)
     pass
 
-def versionsordner_erstellen():
-        folder_name = UPDATE_ORDNER_NAME_USER
-        ensure_folder_exists(folder_name)
         
 def ensure_folder_exists(folder_name):
     base_dir = get_base_dir_path()
@@ -97,6 +95,29 @@ def get_help_file_path(app):
 
 def get_base_dir():
     return get_base_dir_path()
+
+
+def get_settings():
+    settings_file = get_settings_file_path()
+    if os.path.exists(settings_file):
+        with open(settings_file, "r") as file:
+            return json.load(file)
+    else:
+        return {}
+def set_settings(settings):
+    settings_file = get_settings_file_path()
+    with open(settings_file, "w") as file:
+        json.dump(settings, file, indent=4)
+
+def set_user_code(user_code):
+    settings = get_settings()
+    settings["user_code"] = user_code
+    set_settings(settings)
+
+def set_api_key(api_key):
+    settings = get_settings()
+    settings["api_key"] = api_key
+    set_settings(settings)
 
 """
 #TODO #96 Veralgemeinern

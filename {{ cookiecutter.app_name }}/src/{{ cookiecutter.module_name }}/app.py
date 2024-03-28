@@ -17,12 +17,19 @@ from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.UpdateWindow
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_base_dir, open_file, get_help_file_path,update_in_updates_ordner_uebertragen, get_updates_datei_user,update_daten_laden_app,setup_folders,update_daten_laden_user
 
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.Startfenster import Startfenster
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.SettingsWindow import SettingsWindow
 
 from screeninfo import get_monitors
 
 class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
     
     # Define the action handlers for the commands
+    def show_settings(self, widget):
+        # Instantiate the LicenseWindow
+        license_window = SettingsWindow(title="Einstellungen")
+
+        # Show the license window
+        license_window.show()
     def show_license(self, widget):
         # Instantiate the LicenseWindow
         license_window = LicenseWindow(title="Lizenzinformationen")
@@ -146,6 +153,12 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
             tooltip="Öffnet den Programmordner",
             group=settings_group,
         )
+        settings_command = Command(
+            action=self.show_settings,
+            text="Einstellungen",
+            tooltip="Zeigt die Einstellungen an",
+            group=settings_group,
+        )
         
         # Add commands to the app
         self.commands.add(
@@ -153,6 +166,7 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
             open_help_file_command,
             basis_ordner_öffnen_command,
             update_command,
+            settings_command,
         ) 
         
         # Get the size of the primary monitor
