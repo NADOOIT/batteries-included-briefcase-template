@@ -2,7 +2,7 @@ import os
 import json
 import subprocess
 import platform
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.CONSTANTS import BASE_DIR
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.CONSTANTS import BASE_DIR, SETTINGS_ORDNER
 def ensure_folder_exists(folder_name):
     base_dir = get_base_dir_path()
     folder_path = os.path.join(base_dir, folder_name)
@@ -187,3 +187,8 @@ def is_libreoffice_installed():
             return True
         except (subprocess.CalledProcessError, FileNotFoundError):
             return False
+        
+def get_settings_file_path():
+    settings_folder = ensure_folder_exists(SETTINGS_ORDNER)
+    settings_file = os.path.join(settings_folder, "settings.json")
+    return settings_file
