@@ -103,7 +103,7 @@ class Startfenster(toga.Box):
         
         
         except Exception as e:
-            print(f"Fehler beim Verarbeiten der Datei: {str(e)}")
+            print(f"Fehler: {str(e)}")
             fehlermeldung = Fehlermeldung(
                             self.app,
                             retry_function=lambda: self.next_step(),
@@ -112,15 +112,10 @@ class Startfenster(toga.Box):
             self.fehlermeldung_widget = fehlermeldung
             self.standardeingabe_box.add(self.fehlermeldung_widget)
         finally:
-            # Lösche die Datei mit den Daten, die in die temporäre Datei geschrieben wurden
-            dateipfade_der_zu_loeschenden_datei = self.pfad_zur_temp_datei_in_ordner_mit_zugriffrechten
             
+            pass
+        
             try:
-                os.remove(dateipfade_der_zu_loeschenden_datei)
-                print(f"Die temporäre Datei '{dateipfade_der_zu_loeschenden_datei}' wurde erfolgreich gelöscht.")
-            except FileNotFoundError:
-                print(f"Die temporäre Datei '{dateipfade_der_zu_loeschenden_datei}' konnte nicht gefunden werden.")
-            except PermissionError:
-                print(f"Keine ausreichenden Berechtigungen zum Löschen der temporären Datei '{dateipfade_der_zu_loeschenden_datei}'.")
+                print("Aufräumen was bei einem Fehler mit dem Programm über ist")
             except Exception as e:
-                print(f"Ein unerwarteter Fehler ist beim Löschen der temporären Datei aufgetreten: {str(e)}")
+                print(f"EFehler der dabei möglicherweise aufgetreten ist: {str(e)}")
