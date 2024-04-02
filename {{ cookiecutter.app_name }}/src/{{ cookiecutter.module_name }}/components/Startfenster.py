@@ -41,7 +41,7 @@ class Startfenster(toga.Box):
         id: str | None = None,
         start_values: dict | None = None
     ):
-         style = Pack(direction=COLUMN)
+        style = Pack(direction=COLUMN)
         super().__init__(id=id, style=style)
         self.app = app
 

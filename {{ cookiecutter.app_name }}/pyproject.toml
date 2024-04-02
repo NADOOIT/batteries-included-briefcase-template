@@ -25,6 +25,7 @@ requires = [
     "toml",
     "screeninfo",
     "toga",
+    "httpx",
 ]
 
 {{ cookiecutter.pyproject_table_briefcase_app_extra_content }}
