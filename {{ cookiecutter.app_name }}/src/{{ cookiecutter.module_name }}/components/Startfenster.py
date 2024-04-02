@@ -3,16 +3,13 @@ import datetime
 import re
 from time import sleep
 from typing import TYPE_CHECKING, List
-from openpyxl import load_workbook
-import openpyxl
+
 
 import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN
 from toga.widgets.multilinetextinput import MultilineTextInput
 
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import finde_letzte_zeile_in_excel_blatt, lade_daten_aus_excel_blatt_als_DataFrame, loesche_alle_daten_von_blatt, open_file, uebertrage_daten_in_excel_blatt
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.utils import translate_date_to_german
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.styling import StandardStyling
 
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.Fehlermeldung import Fehlermeldung
