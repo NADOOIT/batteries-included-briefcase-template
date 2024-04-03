@@ -119,6 +119,14 @@ def set_api_key(api_key):
     settings["api_key"] = api_key
     set_settings(settings)
 
+def audio_zu_text_konvertieren(audio_dateipfad):
+    # wenn verwendet wir muss openai-whisper installiert sein
+    import whisper
+
+    model = whisper.load_model("base")
+    result = model.transcribe(audio_dateipfad)
+    return result["text"]
+
 """
 #TODO #96 Veralgemeinern
 def update_daten_in_basis_ordner_uebertragen(app):
