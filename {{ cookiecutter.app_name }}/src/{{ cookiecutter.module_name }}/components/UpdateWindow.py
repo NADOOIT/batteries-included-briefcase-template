@@ -11,6 +11,7 @@ from {{ cookiecutter.app_name|lower|replace('-', '_') }}.CONSTANTS import UPDATE
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.utils import ensure_folder_exists
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.styling import StandardStyling
 
+
 class UpdateWindow(toga.Window):
     def __init__(self, title, size=(400, 400)):
         super().__init__(title, size=size)
