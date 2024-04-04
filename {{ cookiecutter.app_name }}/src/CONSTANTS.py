@@ -1,0 +1,5 @@
+UPDATE_ORDNER_NAME_APP = "updates"
+UPDATE_ORDNER_NAME_USER = "Updates"
+BASE_DIR = "nadoo_ai"
+ARCHIV_ORDNER = "Archive"
+KUNDENDATEN_ORDNER_APP = "kundendaten"
