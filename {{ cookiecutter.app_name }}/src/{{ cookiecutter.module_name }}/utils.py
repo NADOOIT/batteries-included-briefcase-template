@@ -217,21 +217,7 @@ def get_beweismittel_Scheidung_data_file_path():
     base_dir = get_base_dir_path()
     return os.path.join(base_dir, BEWEISMITTEL_SCHEIDUNG_DATA_FILE_NAME)
 
-def get_base_dir_path():
-    ensure_base_folder_exits()
-    return os.path.join(os.path.expanduser("~"), BASE_DIR)
 
-def ensure_folder_exists(folder_name):
-    base_dir = get_base_dir_path()
-    folder_path = os.path.join(base_dir, folder_name)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    return folder_path
-
-def ensure_base_folder_exits():
-    base_dir = os.path.join(os.path.expanduser("~"), BASE_DIR)
-    if not os.path.exists(base_dir):
-        os.makedirs(base_dir)
 
 def ensure_lawyer_data_file_exists():
     file_path = get_lawyer_data_file_path()

@@ -1,34 +1,30 @@
 import os
 import json
+from typing import List, Optional
 import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN
 
-from nadoo_travel.src.nadoo_travel.services import set_settings, get_settings,set_user_code, set_api_key
+from {{ cookiecutter.module_name }}.services import get_settings,set_user_code, set_api_key
+from {{ cookiecutter.module_name }}.SettingsElement import SettingsElement
+
+
 
 class SettingsWindow(toga.Window):
-    def __init__(self, title, width=400, height=400):
+    def __init__(self, title, settings_elemente:Optional[List[SettingsElement]] = None, width=400, height=400):
         super().__init__(title, size=(width, height))
+
+        self.settings_elemente = settings_elemente or []
+
         self.content = self.build()
-        self.load_settings()
        
     def build(self):
         # Hauptcontainer für den Inhalt erstellen
         box = toga.Box(style=Pack(direction=COLUMN, padding=10, flex=1))
+        
 
-        # Eingabefeld für den User Code erstellen
-        self.user_code_input = toga.TextInput(
-            placeholder="User Code",
-            style=Pack(padding_bottom=10)
-        )
-        box.add(self.user_code_input)
-
-        # Eingabefeld für den NADOO API Schlüssel erstellen
-        self.api_key_input = toga.TextInput(
-            placeholder="NADOO API Schlüssel",
-            style=Pack(padding_bottom=10)
-        )
-        box.add(self.api_key_input)
+        for elemnt in self.settings_elemente:
+            box.add(elemnt.gui)
 
         # Speichern-Button hinzufügen
         save_button = toga.Button(
@@ -53,10 +49,6 @@ class SettingsWindow(toga.Window):
         
         
     def save_settings(self, widget):
-        set_user_code(self.user_code_input.value)
-        set_api_key(self.api_key_input.value)
-        
-    def load_settings(self):
-        settings = get_settings()
-        self.user_code_input.value = settings.get("user_code", "")
-        self.api_key_input.value = settings.get("api_key", "")
+
+        for settings_element in self.settings_elemente:
+            settings_element.save()
