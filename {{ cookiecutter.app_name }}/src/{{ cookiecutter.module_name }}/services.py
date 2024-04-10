@@ -1,8 +1,22 @@
+import openpyxl
+import pandas
 import subprocess
 import platform
 import os
 import json
 import shutil
+import pandas as pd
+from pandas import NaT
+from datetime import datetime
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import PatternFill
+import pandas as pd
+from deutschland import feiertage
+from deutschland.feiertage.api import default_api
+import time
+import functools
+from openpyxl.worksheet.worksheet import Worksheet
+from openpyxl.utils import get_column_letter
 
 from datetime import datetime
 
@@ -102,6 +116,7 @@ def get_settings():
             return json.load(file)
     else:
         return {}
+    
 def set_settings(settings):
     settings_file = get_settings_file_path()
     with open(settings_file, "w") as file:
@@ -137,7 +152,6 @@ def load_settings():
             return json.load(file)
     else:
         return {}
-
 
 def measure_execution_time(func):
     @functools.wraps(func)
@@ -264,47 +278,7 @@ def vorlagen_in_vorlagen_ordner_uebertragen(app):
                 os.rename(vorlage_app_pfad, neuer_app_pfad_ohne_update)
 """
 
-
-
-
 #LaunchPad
-
-def ermittel_den_aktuellen_monat_als_deutsches_wort(monat_offset=0):
-    """
-    Ermittelt den Monat relativ zum aktuellen Monat als Zahl und gibt den entsprechenden deutschen Monatsnamen zurück.
-
-    Args:
-        monat_offset (int, optional): Die Anzahl der Monate, die zum aktuellen Monat addiert werden sollen. Standard ist 0.
-
-    Returns:
-        str: Der ermittelte Monat auf Deutsch (z.B. "Januar", "Februar", ...).
-    """
-    # Erstelle ein Dictionary, das die Monatszahlen auf die deutschen Monatsnamen abbildet
-    monatsnamen = {
-        1: "Januar",
-        2: "Februar",
-        3: "März",
-        4: "April",
-        5: "Mai",
-        6: "Juni",
-        7: "Juli",
-        8: "August",
-        9: "September",
-        10: "Oktober",
-        11: "November",
-        12: "Dezember"
-    }
-
-    # Ermittle den aktuellen Monat als Zahl
-    aktueller_monat_als_zahl = datetime.now().month
-
-    # Addiere den Offset zum aktuellen Monat
-    ziel_monat = (aktueller_monat_als_zahl + monat_offset) % 12
-    if ziel_monat == 0:
-        ziel_monat = 12
-
-    # Gib den entsprechenden deutschen Monatsnamen zurück
-    return monatsnamen[ziel_monat]
 
 #LAW
 
@@ -335,14 +309,11 @@ from nadoo_law.utils import (
     set_login_information,
 )
 
-
-
 def set_beweismittel_data_Scheidung(beweismittel_data):
     ensure_beweismittel_Scheidung_data_file_exists()
     file_path = get_beweismittel_Scheidung_data_file_path()
     with open(file_path, "w") as f:
         json.dump(beweismittel_data, f, indent=4)
-
 
 def get_beweismittel_data_scheidung():
     ensure_beweismittel_Scheidung_data_file_exists()
@@ -356,21 +327,17 @@ def set_beweismittel_data_OWi(beweismittel_data):
     with open(file_path, "w") as f:
         json.dump(beweismittel_data, f, indent=4)
 
-
 def get_beweismittel_data_OWi():
     ensure_beweismittel_OWi_data_file_exists()
     file_path = get_beweismittel_OWi_data_file_path()
     with open(file_path, "r") as f:
         return json.load(f)
 
-
-
 def set_lawyer_data(lawyer_data):
     ensure_lawyer_data_file_exists()
     file_path = get_lawyer_data_file_path()
     with open(file_path, "w") as f:
         json.dump(lawyer_data, f, indent=4)
-
 
 def get_lawyer_data():
     ensure_lawyer_data_file_exists()
@@ -384,7 +351,6 @@ def setup_folders():
     ensure_folder_exists(get_temp_folder())
     ensure_folder_exists(get_mandanten_folder())
     versionsordner_erstellen()
-
 
 def vorlagen_in_vorlagen_ordner_uebertragen(app):
     vorlagen_ordner_app = os.path.join(app.paths.app, "resources", KUNDENDATEN_ORDNER_APP, VORLAGEN_ORDNER_APP)
@@ -459,7 +425,6 @@ def anwalt_liste_in_basis_ordner_uebertragen(app):
         source_datei_pfad = os.path.join(kundendaten_ordner_app, name_der_anwalt_daten_json_datei)
         if os.path.isfile(source_datei_pfad):
             shutil.copy(source_datei_pfad, ziel_datei_pfad)
-
 
 def get_temp_folder():
     temp_folder_path = os.path.join(os.path.expanduser("~"), BASE_DIR, TEMP_FOLDER)
@@ -911,8 +876,6 @@ def hinzufuegen_anwaltsdaten_zum_kontext(kontext, anwalt_json=None):
     ]
     return kontext
 
-
-
 def add_ausfuehrung(reference, kundenprogramm_ID, antrags_name):
     ensure_data_file_exists()
     new_ausfuehrung = {
@@ -941,53 +904,224 @@ def mark_ausfuehrung_as_fehlerhaft(ausfuehrung_id):
         file.truncate()
         json.dump(data, file, indent=4)
 
+# telemarketing
+        
+def finde_letzte_zeile_in_excel_blatt(sheet:Worksheet):
+                
+    # finde die letzte Spalte mit Werten
+    anzahl_der_spalten = 1
+    max_rows = 1  
+    
+    while (
+        sheet.cell(1, anzahl_der_spalten).value is not None
+        and sheet.cell(1, anzahl_der_spalten).value != "Spalte1"
+    ):
+        anzahl_der_spalten += 1
+                
+    vollstaendig_leere_zeile_gefunden = False
+    leere_spalten_gefunden = 0
+    spalte = 1
+    while spalte <= anzahl_der_spalten and not vollstaendig_leere_zeile_gefunden:
 
-def open_file(file_path):
-    if file_path:
+        while sheet.cell(max_rows, spalte).value is not None:
+            max_rows += 1
+
+        if sheet.cell(max_rows, spalte).value is None:
+            #print("Leere Spalte gefunden")
+            leere_spalten_gefunden += 1
+        else:
+            leere_spalten_gefunden = 0
+
+        spalte += 1
+        
+        if leere_spalten_gefunden == anzahl_der_spalten:
+            vollstaendig_leere_zeile_gefunden = True
+        elif spalte > anzahl_der_spalten:
+            spalte = 1
+            
+    max_rows = max_rows - 1        
+    return max_rows
+    
+def uebertrage_daten_in_excel_blatt(sheet: Worksheet, daten: pd.DataFrame):
+    max_rows = finde_letzte_zeile_in_excel_blatt(sheet)
+    """
+    print(
+        f"Die Tabelle in der Region von Zeile 1 bis {max_rows} und Spalte 1 bis {len(daten.columns)} hat Daten"
+    )
+    """
+
+    # Übertrage die Daten aus dem DataFrame in das Excel-Blatt unterhalb der vorhandenen Daten
+    for row_num, row_data in enumerate(daten.values, start=max_rows + 1):
+        
+        #print(f"Übertrage Zeile {row_num} mit Daten")
+        #print(row_data)
+        
+        for col_num, cell_value in enumerate(row_data, start=1):
+            
+            #print(f"Übertrage Spalte {col_num} mit Wert {cell_value}")
+            
+            if col_num == 1:
+                # Index wird übersprungen
+                continue
+            col_letter = get_column_letter(col_num-1)
+            
+            # Überprüfe, ob der Zellwert ein Datum ist und formatiere es entsprechend
+            if isinstance(cell_value, datetime):
+                if pd.isna(cell_value):  # Überprüfung, ob der Wert NaT ist
+                    cell_value = ''  # Oder ein anderer Platzhalterwert deiner Wahl
+                else:
+                    cell_value = cell_value.strftime("%d.%m.%Y")
+            
+            #print(f"Übertrage Zelle {col_letter}{row_num} mit Wert {cell_value}")
+            
+            sheet[f"{col_letter}{row_num}"] = cell_value
+        
+def zeilentrennung_am_ende_des_excel_blatt_anfuegen(sheet: Worksheet):
+    max_rows = finde_letzte_zeile_in_excel_blatt(sheet)
+    if max_rows > 1:
+        spaltenbezeichner_status_column = finde_spaltenbezeichner_zahlenwert(sheet, "Status")
+        print(f"Spaltenbezeichner Status: {spaltenbezeichner_status_column}")
+        # Füge eine Zeile mit - in alle Zellen der letzten Reihe hinzu und färbe den Hintergrund rot
+        for col_num in range(1, spaltenbezeichner_status_column+1):
+            print(f"Spalte {col_num}")
+            col_letter = get_column_letter(col_num)
+            sheet[f"{col_letter}{max_rows+1}"] = "-"
+            sheet[f"{col_letter}{max_rows+1}"].fill = PatternFill(
+                start_color="FFC7CE", end_color="FFC7CE", fill_type="solid"
+            )
+
+def finde_spaltenbezeichner_zahlenwert(excel_blatt, spaltenbezeichner):
+    """
+    Findet den Zahlenwert für den gegebenen Spaltenbezeichner in einem Excel-Blatt.
+
+    :param excel_blatt: Das Excel-Blatt, in dem nach dem Spaltenbezeichner gesucht werden soll.
+    :param spaltenbezeichner: Der Spaltenbezeichner (z.B. "Status"), nach dem gesucht werden soll.
+    :return: Der Zahlenwert des Spaltenbezeichners (z.B. 1 für Spalte A, 2 für Spalte B usw.) oder None, wenn der Spaltenbezeichner nicht gefunden wurde.
+    """
+    # Entferne Leerzeichen am Ende der Spaltenüberschriften
+    headers = [cell.value.strip() if cell.value is not None else cell.value for cell in excel_blatt[1]]
+
+    # Finde den Zahlenwert des Spaltenbezeichners basierend auf den bereinigten Spaltenüberschriften
+    for i, header in enumerate(headers, start=1):
+        if header == spaltenbezeichner:
+            return i
+
+    # Wenn der Spaltenbezeichner nicht gefunden wurde, gib None zurück
+    return None
+    
+def lade_daten_aus_excel_blatt_als_DataFrame(excel_blatt: Worksheet, spaltenbezeichner_status: str = "Status") -> pd.DataFrame:
+    """
+    Lädt alle Daten aus einem Excel-Blatt in ein DataFrame.
+
+    Args:
+        excel_blatt (openpyxl.worksheet.worksheet.Worksheet): Das Excel-Blatt, aus dem die Daten geladen werden sollen.
+        spaltenbezeichner_status (str, optional): Der Name des Spaltenbezeichners für den Status. Standard ist "Status".
+
+    Returns:
+        pd.DataFrame: Ein DataFrame mit allen Daten aus dem Excel-Blatt.
+    """
+    # Finde den Spaltenbezeichner (A1, B1, C1 ...) mit dem Namen Status
+    spaltenbezeichner_status_column = None
+
+    # Entferne Leerzeichen am Ende der Spaltenüberschriften
+    headers = [cell.value.strip() if cell.value is not None else cell.value for cell in excel_blatt[1]]
+
+    # Finde den Spaltenbezeichner basierend auf den bereinigten Spaltenüberschriften
+    spaltenbezeichner_status_column = finde_spaltenbezeichner_zahlenwert(excel_blatt, spaltenbezeichner_status)
+
+    # Finde die letzte Zeile im Excel-Blatt
+    max_rows = finde_letzte_zeile_in_excel_blatt(excel_blatt)
+    print(max_rows)
+
+    # Lade die Daten aus dem Excel-Blatt in ein DataFrame
+    data = list(excel_blatt.iter_rows(min_row=2, max_row=max_rows, max_col=spaltenbezeichner_status_column, values_only=True))
+    dataframe_aller_daten = pd.DataFrame(data, columns=headers[:spaltenbezeichner_status_column])
+    
+    dataframe_aller_daten.reset_index(drop=False, inplace=True)
+    
+    return dataframe_aller_daten
+
+def loesche_alle_daten_von_blatt(excel_blatt: Worksheet):
+    """
+    Löscht alle Daten von einem Excel-Blatt.
+
+    Args:
+        excel_blatt: Das Excel-Blatt, aus dem die Daten gelöscht werden sollen.
+        spaltenbezeichner_status (str, optional): Der Name des Spaltenbezeichners für den Status. Standard ist "Status".
+    """
+
+    # Finde die letzte Zeile im Excel-Blatt
+    max_rows = finde_letzte_zeile_in_excel_blatt(excel_blatt)
+
+    # Lösche alle Daten aus dem Excel-Blatt
+    excel_blatt.delete_rows(2, max_rows)
+    
+def ermittel_den_aktuellen_monat_als_deutsches_wort(monat_offset=0):
+    """
+    Ermittelt den Monat relativ zum aktuellen Monat als Zahl und gibt den entsprechenden deutschen Monatsnamen zurück.
+
+    Args:
+        monat_offset (int, optional): Die Anzahl der Monate, die zum aktuellen Monat addiert werden sollen. Standard ist 0.
+
+    Returns:
+        str: Der ermittelte Monat auf Deutsch (z.B. "Januar", "Februar", ...).
+    """
+    # Erstelle ein Dictionary, das die Monatszahlen auf die deutschen Monatsnamen abbildet
+    monatsnamen = {
+        1: "Januar",
+        2: "Februar",
+        3: "März",
+        4: "April",
+        5: "Mai",
+        6: "Juni",
+        7: "Juli",
+        8: "August",
+        9: "September",
+        10: "Oktober",
+        11: "November",
+        12: "Dezember"
+    }
+
+    # Ermittle den aktuellen Monat als Zahl
+    aktueller_monat_als_zahl = datetime.now().month
+
+    # Addiere den Offset zum aktuellen Monat
+    ziel_monat = (aktueller_monat_als_zahl + monat_offset) % 12
+    if ziel_monat == 0:
+        ziel_monat = 12
+
+    # Gib den entsprechenden deutschen Monatsnamen zurück
+    return monatsnamen[ziel_monat]
+
+def set_uhrzeit_nächsten_werktag_wechsel(uhrzeit_nächsten_werktag_wechsel):
+    settings = get_settings()
+    settings["uhrzeit_nächsten_werktag_wechsel"] = uhrzeit_nächsten_werktag_wechsel
+    set_settings(settings)
+
+def hole_uhrzeit_nächsten_werktag_wechsel():
+    settings = get_settings()
+    uhrzeit_nächsten_werktag_wechsel = settings.get("uhrzeit_nächsten_werktag_wechsel", "16:00:00")
+    return pd.to_datetime(uhrzeit_nächsten_werktag_wechsel).time()
+
+def hole_feiertage(jahr:str, bundesland="NATIONAL"):
+    configuration = feiertage.Configuration(host="https://feiertage-api.de/api")
+
+    with feiertage.ApiClient(configuration) as api_client:
+        api_instance = default_api.DefaultApi(api_client)
+        nur_daten = 1
+
         try:
-            if platform.system() == "Windows":
-                subprocess.run(["explorer", file_path], check=True)
-            elif platform.system() == "Darwin":  # macOS
-                subprocess.run(["open", file_path], check=True)
-            else:  # Assuming Linux
-                subprocess.run(["xdg-open", file_path], check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"Error opening file: {e}")
-    else:
-        print("File path is not set. Unable to open file.")
-        
-def get_help_file_path(app):
-    return os.path.join(app.paths.app, "resources", "help.pdf")
-
-def get_updates_datei_user():
-    #ich möchte den dateipfad der update.json datei aus dem updates ordner haben, welcher im updates ordner im user verzeichnis liegt
-    updates_dateipfad_user = os.path.join(os.path.expanduser("~"), get_base_dir(), UPDATE_ORDNER_NAME_USER, "update.json")
-    return updates_dateipfad_user
-
-def get_updates_pdf_path(app):
-    updates_pdf_dateipfad = os.path.join(app.paths.app, "resources", "update.pdf")
-    return updates_pdf_dateipfad
-
-def update_daten_laden_user():
-        file_path = get_updates_datei_user()
-        with open(file_path, "r") as f:
-            return json.load(f)
-        
-def update_daten_laden_app(app):
-        file_path = get_updates_datei_app(app)
-        with open(file_path, "r") as f:
-            return json.load(f)
-        
-def get_updates_datei_app(app):
-    updates_datei_app = os.path.join(app.paths.app, "resources", UPDATE_ORDNER_NAME_APP, "update.json")
-    return updates_datei_app
-
-def update_in_updates_ordner_uebertragen(app):
-        updates_datei_app = os.path.join(app.paths.app, "resources", UPDATE_ORDNER_NAME_APP, "update.json")
-        updates_datei_user = get_updates_datei_user()
-
-        shutil.copy(updates_datei_app, updates_datei_user)
-
-def versionsordner_erstellen():
-        folder_name = UPDATE_ORDNER_NAME_USER
-        ensure_folder_exists(folder_name)
+            if bundesland == "NATIONAL":
+                api_response = api_instance.get_feiertage(jahr, nur_daten=nur_daten)
+            else:
+                api_response = api_instance.get_feiertage(
+                    jahr, nur_land=bundesland, nur_daten=nur_daten
+                )
+            feiertage_liste = [
+                pd.to_datetime(feiertag, format="%Y-%m-%d")
+                for feiertag in api_response.values()
+            ]
+            return feiertage_liste
+        except feiertage.ApiException as e:
+            print("Exception when calling DefaultApi->get_feiertage: %s\n" % e)
+            return []
