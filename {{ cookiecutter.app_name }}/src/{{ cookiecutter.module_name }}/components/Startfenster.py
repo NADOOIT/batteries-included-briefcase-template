@@ -46,11 +46,11 @@ class Startfenster(toga.Box):
         
         self.console_output = MultilineTextInput(id=id, style=Pack(flex=1), readonly=True)
         
-        self.standardeingabe_box.excelDatei = toga.MultilineTextInput(
+        self.excelDatei = toga.MultilineTextInput(
             placeholder="Excel Datei hier ablegen",
             style=StandardStyling.standard_input_style(),
         )
-        self.standardeingabe_box.add(self.standardeingabe_box.excelDatei)
+        self.standardeingabe_box.add(self.excelDatei)
 
         #self.standardeingabe_box.dateiname = toga.TextInput(style=StandardStyling.standard_input_style())
         #self.standardeingabe_box.add(self.standardeingabe_box.dateiname)
@@ -90,7 +90,7 @@ class Startfenster(toga.Box):
 
     
     def setup_input_fields(self, start_values):
-        self.standardeingabe_box.excelDatei.value = start_values["excelDatei"]
+        self.excelDatei.value = start_values["excelDatei"]
 
     def next_step(self, widget=None):
 
