@@ -22,6 +22,9 @@ from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_bas
 
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.Startfenster import Startfenster
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.SettingsWindow import SettingsWindow
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.SettingsWindow import SettingsWindow
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.SettingUserCode import SettingUserCode
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.SettingNadooitAPISchluessel import SettingNadooitAPISchluessel
 
 from screeninfo import get_monitors
 
@@ -29,11 +32,19 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
 
     # Define the action handlers for the commands
     def show_settings(self, widget):
-        # Instantiate the LicenseWindow
-        license_window = SettingsWindow(title="Einstellungen")
+            
+            # Liste von Settings Elementen die im SettingsWindow angezeigt werden sollen
+            settings_elemente = []
 
-        # Show the license window
-        license_window.show()
+            settings_elemente.append(SettingUserCode())
+            settings_elemente.append(SettingNadooitAPISchluessel())
+
+            
+            # Instantiate the LicenseWindow
+            license_window = SettingsWindow(title="Einstellungen",settings_elemente=settings_elemente)
+
+            # Show the license window
+            license_window.show()
     def show_license(self, widget):
         # Instantiate the LicenseWindow
         license_window = LicenseWindow(title="Lizenzinformationen")
