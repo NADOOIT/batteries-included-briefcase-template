@@ -4,8 +4,8 @@ from toga.style import Pack
 from toga.style.pack import COLUMN
 from toga.widgets.button import OnPressHandler
 from toga import Window
-from nadoo_law.services import get_lawyer_data, set_lawyer_data
-from nadoo_law.styling import StandardStyling
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_lawyer_data, set_lawyer_data
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.styling import StandardStyling
 class LawyerSelectionComponent(toga.Box):
     def __init__(
         self,

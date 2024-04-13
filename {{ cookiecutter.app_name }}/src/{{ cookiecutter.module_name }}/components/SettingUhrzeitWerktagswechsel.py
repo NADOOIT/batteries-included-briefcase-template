@@ -1,8 +1,8 @@
-from nadoo_telemarketing.components.SettingsElement import SettingsElement
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.SettingsElement import SettingsElement
 import toga
 from toga.style import Pack
 from toga.style.pack import ROW
-from nadoo_telemarketing.services import set_uhrzeit_nächsten_werktag_wechsel, get_settings
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import set_uhrzeit_nächsten_werktag_wechsel, get_settings
 
 class SettingUhrzeitWerktagswechsel(SettingsElement):
     

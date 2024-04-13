@@ -5,8 +5,8 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN
 
-from nadoo_telemarketing.services import get_settings,set_user_code, set_api_key
-from nadoo_telemarketing.components.SettingsElement import SettingsElement
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.services import get_settings,set_user_code, set_api_key
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.SettingsElement import SettingsElement
 
 
 
