@@ -49,14 +49,14 @@ class Fehlermeldung(toga.Box):
                 msg = email.message.EmailMessage()
                 msg.set_content("Error code: {}\n\nRegards,\nThe Nadoo Law Team".format(12345))
                 msg["Subject"] = "Error Report"
-                msg["From"] = "nadoo_law@example.com"
+                msg["From"] = "{{ cookiecutter.app_name|lower|replace('-', '_') }}@example.com"
                 msg["To"] = "support@example.com"
 
                 # Send the email
                 try:
                     server = smtplib.SMTP("smtp.example.com", 587)
                     server.starttls()
-                    server.login("nadoo_law@example.com", "password")
+                    server.login("{{ cookiecutter.app_name|lower|replace('-', '_') }}@example.com", "password")
                     server.send_message(msg)
                     server.quit()
 

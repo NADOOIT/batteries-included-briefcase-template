@@ -315,12 +315,12 @@ import logging
 import os
 import uuid
 import shutil
-from nadoo_law.CONSTANTS import TEMP_FOLDER, BASE_DIR,MANDATEN_ORDNER_NAME,KUNDENDATEN_ORDNER_APP, UPDATE_ORDNER_NAME_APP, UPDATE_ORDNER_NAME_USER,VORLAGEN_ORDNER_APP, ARCHIV_ORDNER
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.CONSTANTS import TEMP_FOLDER, BASE_DIR,MANDATEN_ORDNER_NAME,KUNDENDATEN_ORDNER_APP, UPDATE_ORDNER_NAME_APP, UPDATE_ORDNER_NAME_USER,VORLAGEN_ORDNER_APP, ARCHIV_ORDNER
 from datetime import datetime
 import subprocess
 import platform
 
-from nadoo_law.utils import (
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.utils import (
     ensure_beweismittel_OWi_data_file_exists,
     ensure_beweismittel_Scheidung_data_file_exists,
     ensure_data_file_exists,

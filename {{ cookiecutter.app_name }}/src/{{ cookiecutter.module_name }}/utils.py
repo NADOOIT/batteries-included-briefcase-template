@@ -194,7 +194,7 @@ def is_libreoffice_installed():
         import json
 import os
 import uuid
-from nadoo_law.CONSTANTS import (
+from {{ cookiecutter.app_name|lower|replace('-', '_') }}.CONSTANTS import (
     BEWEISMITTEL_OWI_DATA_FILE_NAME,
     BEWEISMITTEL_SCHEIDUNG_DATA_FILE_NAME,
     LAWYER_DATA_FILE_NAME,
