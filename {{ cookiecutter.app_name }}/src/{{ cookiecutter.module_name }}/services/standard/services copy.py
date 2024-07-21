@@ -6,13 +6,11 @@ import shutil
 
 from datetime import datetime
 
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.CONSTANTS import KUNDENDATEN_ORDNER_APP, ARCHIV_ORDNER, BASE_DIR, UPDATE_ORDNER_NAME_USER, UPDATE_ORDNER_NAME_APP, SETTINGS_ORDNER
 
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.utils import (
-    get_base_dir_path, get_settings_file_path
-)
 
-""" 
+
+
+"""
 Vorlage for JSON-Datei anbindung
 def set_xyz_data(beweismittel_data):
     ensure_beweismittel_OWi_data_file_exists()
@@ -33,7 +31,7 @@ def setup_folders():
     ensure_folder_exists(UPDATE_ORDNER_NAME_USER)
     ensure_folder_exists(SETTINGS_ORDNER)
     pass
-        
+
 def ensure_folder_exists(folder_name):
     base_dir = get_base_dir_path()
     folder_path = os.path.join(base_dir, folder_name)
@@ -59,7 +57,7 @@ def open_file(file_path):
             print(f"Error opening file: {e}")
     else:
         print("File path is not set. Unable to open file.")
-        
+
 def get_updates_datei_user():
     #ich möchte den dateipfad der update.json datei aus dem updates ordner haben, welcher im updates ordner im user verzeichnis liegt
     updates_dateipfad_user = os.path.join(os.path.expanduser("~"), get_base_dir(), UPDATE_ORDNER_NAME_USER, "update.json")
@@ -73,12 +71,12 @@ def update_daten_laden_user():
         file_path = get_updates_datei_user()
         with open(file_path, "r") as f:
             return json.load(f)
-        
+
 def update_daten_laden_app(app):
         file_path = get_updates_datei_app(app)
         with open(file_path, "r") as f:
             return json.load(f)
-        
+
 def get_updates_datei_app(app):
     updates_datei_app = os.path.join(app.paths.app, "resources", UPDATE_ORDNER_NAME_APP, "update.json")
     return updates_datei_app
@@ -88,7 +86,7 @@ def update_in_updates_ordner_uebertragen(app):
         updates_datei_user = get_updates_datei_user()
 
         shutil.copy(updates_datei_app, updates_datei_user)
-        
+
 def get_help_file_path(app):
     return os.path.join(app.paths.app, "resources", "help.pdf")
 
@@ -223,7 +221,7 @@ def update_daten_in_basis_ordner_uebertragen(app):
         source_datei_pfad = os.path.join(kundendaten_ordner_app, ziel_json_datei_name)
         if os.path.isfile(source_datei_pfad):
             shutil.copy(source_datei_pfad, ziel_datei_pfad)
-            
+
 def vorlagen_in_vorlagen_ordner_uebertragen(app):
     vorlagen_ordner_app = os.path.join(app.paths.app, "resources", KUNDENDATEN_ORDNER_APP, VORLAGEN_ORDNER_APP)
     vorlagen_ordner_user = get_template_folder()  # Annahme, dass diese Funktion das Benutzerverzeichnis für Vorlagen zurückgibt
@@ -254,7 +252,7 @@ def vorlagen_in_vorlagen_ordner_uebertragen(app):
                 datumsanhang = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
                 archivierte_datei_name = f"{basisname}_{datumsanhang}{erweiterung}"
                 shutil.move(vorlage_user_pfad, os.path.join(archiv_ordner, archivierte_datei_name))
-            
+
             # Kopiere die Vorlage oder aktualisierte Vorlage in das Benutzerverzeichnis
             shutil.copy(vorlage_app_pfad, vorlage_user_pfad)
 
@@ -315,25 +313,12 @@ import logging
 import os
 import uuid
 import shutil
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.CONSTANTS import TEMP_FOLDER, BASE_DIR,MANDATEN_ORDNER_NAME,KUNDENDATEN_ORDNER_APP, UPDATE_ORDNER_NAME_APP, UPDATE_ORDNER_NAME_USER,VORLAGEN_ORDNER_APP, ARCHIV_ORDNER
+
 from datetime import datetime
 import subprocess
 import platform
 
-from {{ cookiecutter.app_name|lower|replace('-', '_') }}.utils import (
-    ensure_beweismittel_OWi_data_file_exists,
-    ensure_beweismittel_Scheidung_data_file_exists,
-    ensure_data_file_exists,
-    ensure_lawyer_data_file_exists,
-    get_base_dir_path,
-    get_ausfuehrungen_file_path,
-    get_beweismittel_OWi_data_file_path,
-    get_beweismittel_Scheidung_data_file_path,
-    get_lawyer_data_file_path,
-    ensure_folder_exists,
-    get_login_information,
-    set_login_information,
-)
+
 
 
 
@@ -349,7 +334,7 @@ def get_beweismittel_data_scheidung():
     file_path = get_beweismittel_Scheidung_data_file_path()
     with open(file_path, "r") as f:
         return json.load(f)
-    
+
 def set_beweismittel_data_OWi(beweismittel_data):
     ensure_beweismittel_OWi_data_file_exists()
     file_path = get_beweismittel_OWi_data_file_path()
@@ -416,7 +401,7 @@ def vorlagen_in_vorlagen_ordner_uebertragen(app):
                 datumsanhang = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
                 archivierte_datei_name = f"{basisname}_{datumsanhang}{erweiterung}"
                 shutil.move(vorlage_user_pfad, os.path.join(archiv_ordner, archivierte_datei_name))
-            
+
             # Kopiere die Vorlage oder aktualisierte Vorlage in das Benutzerverzeichnis
             shutil.copy(vorlage_app_pfad, vorlage_user_pfad)
 
@@ -569,7 +554,7 @@ def print_paragraph_details(paragraph):
                 if run.font.name:
                     print(f"    Font name: {run.font.name}")
                 if run.font.size:
-                    print(f"    Font size: {run.font.size}")    
+                    print(f"    Font size: {run.font.size}")
 
 def datenabfrage_datev_for_aktenzeichen(aktenzeichen:str, passwort:str):
     url = 'https://localhost:58452/datev/api/law/v1/files/'
@@ -588,7 +573,7 @@ def datenabfrage_datev_for_aktenzeichen(aktenzeichen:str, passwort:str):
     auth = HTTPBasicAuth(username, passwort)
 
     response = requests.get(url, params=params, headers=headers, auth=auth, verify=False)
-    
+
     if response.status_code == 200:
         return response.json()  # Gibt das JSON-Antwortobjekt zurück
     else:
@@ -896,10 +881,10 @@ def get_datev_example_data():
     ]
 
 def hinzufuegen_anwaltsdaten_zum_kontext(kontext, anwalt_json=None):
-    
+
     if anwalt_json is None:
         anwalt_json = get_lawyer_data()
-    
+
     # Hier werden die Anwaltsdetails aus der anwalt_json extrahiert
     anwalt_details = anwalt_json.get('lawyer_details', {})
     kontext['ANWÄLTE'] = [
@@ -928,7 +913,7 @@ def add_ausfuehrung(reference, kundenprogramm_ID, antrags_name):
         data.append(new_ausfuehrung)
         file.seek(0)
         json.dump(data, file, indent=4)
-        
+
 def mark_ausfuehrung_as_fehlerhaft(ausfuehrung_id):
     ensure_data_file_exists()
     with open(get_ausfuehrungen_file_path(), "r+") as file:
@@ -955,7 +940,7 @@ def open_file(file_path):
             print(f"Error opening file: {e}")
     else:
         print("File path is not set. Unable to open file.")
-        
+
 def get_help_file_path(app):
     return os.path.join(app.paths.app, "resources", "help.pdf")
 
@@ -972,12 +957,12 @@ def update_daten_laden_user():
         file_path = get_updates_datei_user()
         with open(file_path, "r") as f:
             return json.load(f)
-        
+
 def update_daten_laden_app(app):
         file_path = get_updates_datei_app(app)
         with open(file_path, "r") as f:
             return json.load(f)
-        
+
 def get_updates_datei_app(app):
     updates_datei_app = os.path.join(app.paths.app, "resources", UPDATE_ORDNER_NAME_APP, "update.json")
     return updates_datei_app
