@@ -15,6 +15,7 @@ from toga.style.pack import COLUMN
 from toga.style import Pack
 from toga import Command, Group
 
+
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.LicenseWindow import LicenseWindow
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.UpdateWindow import UpdateWindow
 
@@ -27,6 +28,8 @@ from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.SettingUserC
 from {{ cookiecutter.app_name|lower|replace('-', '_') }}.components.SettingNadooitAPISchluessel import SettingNadooitAPISchluessel
 
 from screeninfo import get_monitors
+from {{ cookiecutter.app_name }}.src.{{ cookiecutter.module_name }}.services.standard.add_ausfuehrung import (
+    add_ausfuehrung)
 
 class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
 
