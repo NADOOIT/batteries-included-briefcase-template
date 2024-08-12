@@ -32,14 +32,14 @@ class {{ cookiecutter.app_name|lower|replace('-', '_') }}(toga.App):
 
     # Define the action handlers for the commands
     def show_settings(self, widget):
-            
+
             # Liste von Settings Elementen die im SettingsWindow angezeigt werden sollen
             settings_elemente = []
 
             settings_elemente.append(SettingUserCode())
             settings_elemente.append(SettingNadooitAPISchluessel())
 
-            
+
             # Instantiate the LicenseWindow
             license_window = SettingsWindow(title="Einstellungen",settings_elemente=settings_elemente)
 
